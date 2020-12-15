@@ -46,7 +46,11 @@ function get_release_data( $user, $repository ) {
 	}
 
 	$release = _request_release_data( $user, $repository );
-	$byte    = file_put_contents( $json_file, json_encode( $release ), LOCK_EX );
+	if ( ! $release ) {
+		return false;
+	}
+
+	$byte = file_put_contents( $json_file, json_encode( $release ), LOCK_EX );
 	if ( ! $byte ) {
 		error( 'Failed write json file: ' . $json_file );
 		return false;
