@@ -93,6 +93,9 @@ function get_zip( $release, $user, $repository ) {
 }
 
 function download( $zip_path ) {
+	header( 'X-Robots-Tag: noindex, nofollow', true );
+	header( 'Content-Description: File Transfer' );
+	header( 'Content-Transfer-Encoding: binary' );
 	header( 'Content-Type: application/octet-stream' );
 	header( 'Content-Length: ' . filesize( $zip_path ) );
 	header( 'Content-Disposition: attachment; filename="' . basename( $zip_path ) . '"' );
@@ -101,6 +104,7 @@ function download( $zip_path ) {
 	while ( ob_get_level()) {
 		ob_end_clean();
 	}
+	flush();
 
 	readfile( $zip_path );
 	exit;
